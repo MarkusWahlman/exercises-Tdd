@@ -87,7 +87,7 @@ function createApp(database: Database) {
     return Math.ceil(baseCost * (1 - reduction / 100));
   }
 
-  function calculateReduction(date: Date | undefined, plainDate: Temporal.PlainDate) {
+  function calculateReduction(date: Date | undefined, plainDate: Temporal.PlainDate | undefined) {
     let reduction = 0;
     if (date && isMonday(date, plainDate) && !isHoliday(date, plainDate)) {
       reduction = 35;
@@ -95,11 +95,11 @@ function createApp(database: Database) {
     return reduction;
   }
 
-  function isMonday(date: Date, plainDate: Temporal.PlainDate) {
+  function isMonday(date: Date, plainDate: Temporal.PlainDate | undefined) {
     return date.getDay() === 1;
   }
 
-  function isHoliday(date: Date | undefined, plainDate: Temporal.PlainDate) {
+  function isHoliday(date: Date | undefined, plainDate: Temporal.PlainDate | undefined) {
     const holidays = database.getHolidays();
     for (let row of holidays) {
       let holiday = new Date(row.holiday);
