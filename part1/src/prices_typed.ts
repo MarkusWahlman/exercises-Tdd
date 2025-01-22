@@ -105,7 +105,7 @@ function createApp(database: Database) {
       let holiday = new Date(row.holiday);
       let plainHoliday = parsePlainDate(row.holiday);
       if (
-        date &&
+        plainDate &&
         plainDate?.year === plainHoliday?.year &&
         plainDate?.month === plainHoliday?.month &&
         plainDate?.day === plainHoliday?.day
