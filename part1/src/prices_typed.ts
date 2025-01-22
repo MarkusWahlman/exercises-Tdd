@@ -71,7 +71,7 @@ function createApp(database: Database) {
     baseCost: number,
     plainDate: Temporal.PlainDate | undefined,
   ) {
-    let reduction = calculateReduction(date, plainDate);
+    let reduction = calculateReduction(plainDate);
     if (age === undefined) {
       return Math.ceil(baseCost * (1 - reduction / 100));
     }
@@ -87,7 +87,7 @@ function createApp(database: Database) {
     return Math.ceil(baseCost * (1 - reduction / 100));
   }
 
-  function calculateReduction(date: Date | undefined, plainDate: Temporal.PlainDate | undefined) {
+  function calculateReduction(plainDate: Temporal.PlainDate | undefined) {
     let reduction = 0;
     if (plainDate && isMonday(plainDate) && !isHoliday(plainDate)) {
       reduction = 35;
