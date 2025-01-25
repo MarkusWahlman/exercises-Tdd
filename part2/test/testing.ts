@@ -1,6 +1,6 @@
 import { Assertion } from "chai";
 
-export function normalize(s) {
+export function normalize(s: string) {
   return s.replaceAll(" ", "").trim() + "\n";
 }
 

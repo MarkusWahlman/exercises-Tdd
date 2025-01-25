@@ -12,10 +12,12 @@ test("📎 Looks like you are changing lots of production code at a time. Prefer
 
   const changes = stdout
     .split("\n")
-    .map((line) => line.split("\t"))
-    .filter((parts) => parts.length === 3)
-    .map(([added, removed, _filename]) => Math.max(parseInt(added, 10), parseInt(removed, 10)))
-    .reduce((a, b) => a + b, 0);
+    .map((line: string) => line.split("\t"))
+    .filter((parts: string[]) => parts.length === 3)
+    .map(([added, removed, _filename]: [string, string, string]) =>
+      Math.max(parseInt(added, 10), parseInt(removed, 10))
+    )
+    .reduce((a: number, b: number) => a + b, 0);
 
   expect(changes, "number of changed lines").to.be.lessThanOrEqual(changedLinesLimit);
 });
