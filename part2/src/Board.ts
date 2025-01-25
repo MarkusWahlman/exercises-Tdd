@@ -9,7 +9,10 @@ export class Board {
     this.grid = Array.from({ length: height }, () => Array(width).fill("."));
   }
 
-  drop() {}
+  drop(block: string) {
+    const middleX = Math.floor(this.width / 2);
+    this.grid[0][middleX] = block;
+  }
 
   toString() {
     let boardAsString = "";
