@@ -14,6 +14,25 @@ export class Board {
     this.grid[0][middleX] = block;
   }
 
+  tick() {
+    for (let column = this.grid.length - 1; column >= 0; column--) {
+      for (let row = 0; row < this.grid[column].length; row++) {
+        const curBlock = this.grid[column][row];
+        if (curBlock === ".") {
+          continue;
+        }
+
+        const nextBlock = this.grid[column][row + 1];
+        if (!nextBlock || nextBlock !== ".") {
+          continue;
+        }
+
+        this.grid[column + 1][row] = curBlock;
+        this.grid[column][row] = ".";
+      }
+    }
+  }
+
   toString() {
     let boardAsString = "";
     for (let row = 0; row < this.grid.length; row++) {

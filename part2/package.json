@@ -35,5 +35,6 @@
     "autotest": "vitest watch",
     "format": "prettier --write .",
     "lint": "tsc"
-  }
+  },
+  "type": "module"
 }
