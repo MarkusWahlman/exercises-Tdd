@@ -5,20 +5,24 @@ export class Block {
   column: number;
   row: number;
   symbol: string;
+  atBottom: boolean;
 
   constructor(board: Board, symbol: string) {
     this.board = board;
     this.row = Math.floor(board.width / 2);
     this.column = 0;
     this.symbol = symbol;
+    this.atBottom = false;
 
     this.board.grid[this.column][this.row] = symbol;
   }
 
   moveDown() {
     if (this.column + 1 >= this.board.height || this.board.grid[this.column + 1][this.row] !== ".") {
+      this.atBottom = true;
       return;
     }
+    this.atBottom = false;
 
     this.board.grid[this.column][this.row] = ".";
     this.column += 1;

@@ -1,6 +1,6 @@
 import { beforeEach, describe, test } from "vitest";
 import { expect } from "chai";
-import { Board } from "../src/Board";
+import { Board } from "../src/Board.js";
 
 describe("Falling blocks", () => {
   let board: Board;
@@ -39,7 +39,7 @@ describe("Falling blocks", () => {
       );
     });
 
-    test.skip("at most one block may be falling at a time", () => {
+    test("at most one block may be falling at a time", () => {
       const before = board.toString();
       expect(() => board.drop("Y")).to.throw("already falling");
       const after = board.toString();

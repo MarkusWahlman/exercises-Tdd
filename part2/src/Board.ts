@@ -12,8 +12,12 @@ export class Board {
     this.grid = Array.from({ length: height }, () => Array(width).fill("."));
   }
 
-  drop(block: string) {
-    this.activeBlock = new Block(this, "X");
+  drop(symbol: string) {
+    if (!this.activeBlock || this.activeBlock.atBottom) {
+      this.activeBlock = new Block(this, symbol);
+    } else {
+      throw "already falling";
+    }
   }
 
   tick() {
