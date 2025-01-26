@@ -13,7 +13,7 @@ export class Board {
   }
 
   drop(symbol: string) {
-    if (!this.activeBlock || this.activeBlock.atBottom) {
+    if (!this.activeBlock || !this.activeBlock.isFalling) {
       this.activeBlock = new Block(this, symbol);
     } else {
       throw "already falling";
@@ -22,6 +22,10 @@ export class Board {
 
   tick() {
     this.activeBlock?.moveDown();
+  }
+
+  hasFalling() {
+    return this.activeBlock?.isFalling;
   }
 
   toString() {
