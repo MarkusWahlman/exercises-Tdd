@@ -1,7 +1,10 @@
+import { Block } from "./Block.js";
+
 export class Board {
   width;
   height;
-  grid: Array<string[]>;
+  grid: string[][];
+  activeBlock?: Block;
 
   constructor(width: number, height: number) {
     this.width = width;
@@ -10,27 +13,11 @@ export class Board {
   }
 
   drop(block: string) {
-    const middleX = Math.floor(this.width / 2);
-    this.grid[0][middleX] = block;
+    this.activeBlock = new Block(this, "X");
   }
 
   tick() {
-    for (let column = this.grid.length - 1; column >= 0; column--) {
-      for (let row = 0; row < this.grid[column].length; row++) {
-        const curBlock = this.grid[column][row];
-        if (curBlock === ".") {
-          continue;
-        }
-
-        const nextBlock = this.grid[column][row + 1];
-        if (!nextBlock || nextBlock !== ".") {
-          continue;
-        }
-
-        this.grid[column + 1][row] = curBlock;
-        this.grid[column][row] = ".";
-      }
-    }
+    this.activeBlock?.moveDown();
   }
 
   toString() {
