@@ -29,13 +29,6 @@ export class Board {
   }
 
   toString() {
-    let boardAsString = "";
-    for (let row = 0; row < this.grid.length; row++) {
-      for (let column = 0; column < this.grid[row].length; column++) {
-        boardAsString += this.grid[row][column];
-      }
-      boardAsString += "\n";
-    }
-    return boardAsString;
+    return this.grid.map((row) => row.join("")).join("\n") + "\n";
   }
 }
