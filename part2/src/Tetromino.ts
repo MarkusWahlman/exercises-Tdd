@@ -1,71 +1,123 @@
-// import { Block } from "./Block.js";
-// import { Board } from "./Board.js";
+import { RotatingShape } from "./RotatingShape.js";
 
-// export enum Tetromino {
-//   I_SHAPE = "I",
-//   T_SHAPE = "T",
-//   L_SHAPE = "L",
-//   J_SHAPE = "J",
-//   S_SHAPE = "S",
-//   Z_SHAPE = "Z",
-//   O_SHAPE = "O",
-// }
+export class Tetromino {
+  static get I_SHAPE() {
+    return new ITetromino();
+  }
 
-// export class TetrominoShape {
-//   blocks: Block[];
-//   board: Board;
-//   isFalling: boolean;
+  // prettier-ignore
+  static T_SHAPE = Tetromino.fromString(
+    [
+      ".T.", 
+      "TTT", 
+      "..."
+    ].join("\n")
+  );
 
-//   constructor(board: Board, type: Tetromino) {
-//     this.board = board;
-//     this.isFalling = false;
-//     const shapeOffsets: Record<Tetromino, [number, number][]> = {
-//       [Tetromino.I_SHAPE]: [
-//         [0, -1],
-//         [0, 0],
-//         [0, 1],
-//         [0, 2],
-//       ],
-//       [Tetromino.T_SHAPE]: [
-//         [0, -1],
-//         [0, 0],
-//         [0, 1],
-//         [1, 0],
-//       ],
-//       [Tetromino.L_SHAPE]: [
-//         [-1, 0],
-//         [0, 0],
-//         [1, 0],
-//         [1, 1],
-//       ],
-//       [Tetromino.J_SHAPE]: [
-//         [-1, 1],
-//         [0, 1],
-//         [1, 1],
-//         [1, 0],
-//       ],
-//       [Tetromino.S_SHAPE]: [
-//         [0, -1],
-//         [0, 0],
-//         [1, 0],
-//         [1, 1],
-//       ],
-//       [Tetromino.Z_SHAPE]: [
-//         [0, 0],
-//         [0, 1],
-//         [1, -1],
-//         [1, 0],
-//       ],
-//       [Tetromino.O_SHAPE]: [
-//         [0, 0],
-//         [0, 1],
-//         [1, 0],
-//         [1, 1],
-//       ],
-//     };
+  // prettier-ignore
+  static L_SHAPE = Tetromino.fromString(
+    [
+      "..L",
+      "LLL",
+      "..."
+    ].join("\n")
+  );
 
-//     this.blocks = shapeOffsets[type].map(([dx, dy]) => {
-//       return new Block(board, type.toString(), dx, dy);
-//     });
-//   }
-// }
+  // prettier-ignore
+  static J_SHAPE = Tetromino.fromString(
+    [
+      "J..",
+      "JJJ",
+      "..."
+    ].join("\n")
+  );
+
+  // prettier-ignore
+  static S_SHAPE = Tetromino.fromString(
+    [
+      ".SS",
+      "SS.",
+      "..."
+    ].join("\n")
+  );
+
+  // prettier-ignore
+  static Z_SHAPE = Tetromino.fromString(
+    [
+      "ZZ.",
+      ".ZZ",
+      "..."
+    ].join("\n")
+  );
+
+  static get O_SHAPE() {
+    return new OTetromino();
+  }
+
+  grid: string[][];
+
+  constructor(grid: string[][]) {
+    this.grid = grid;
+  }
+
+  static fromString(shape: string): Tetromino {
+    const grid = shape
+      .trim()
+      .split("\n")
+      .map((row) => row.trim().split(""));
+
+    return new Tetromino(grid);
+  }
+
+  toString(): string {
+    return this.grid.map((row) => row.join("")).join("\n") + "\n";
+  }
+
+  rotateRight() {
+    const rotatingShape = RotatingShape.fromString(this.toString());
+    return Tetromino.fromString(rotatingShape.rotateRight().toString());
+  }
+
+  rotateLeft() {
+    const rotatingShape = RotatingShape.fromString(this.toString());
+    return Tetromino.fromString(rotatingShape.rotateLeft().toString());
+  }
+}
+
+export class ITetromino extends Tetromino {
+  constructor() {
+    // prettier-ignore
+    super(Tetromino.fromString(
+        [
+            ".....", 
+            ".....", 
+            "IIII.",
+            ".....",
+            "....."
+        ].join("\n")).grid);
+  }
+
+  rotateLeft(): Tetromino {
+    return this.rotateRight();
+  }
+}
+
+export class OTetromino extends Tetromino {
+  constructor() {
+    // prettier-ignore
+    super(Tetromino.fromString(
+        [
+            ".OO", 
+            ".OO", 
+            "..."
+        ].join("\n")).grid);
+  }
+
+  rotateRight(): Tetromino {
+    return this;
+  }
+
+  rotateLeft(): Tetromino {
+    return this;
+  }
+}

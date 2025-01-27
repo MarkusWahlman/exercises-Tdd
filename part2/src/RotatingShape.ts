@@ -20,6 +20,7 @@ export class RotatingShape {
 
   rotateRight() {
     const rotatedGrid = this.grid[0].map((_, colIndex) => this.grid.map((row) => row[colIndex]).reverse());
+
     return new RotatingShape(rotatedGrid);
   }
 
