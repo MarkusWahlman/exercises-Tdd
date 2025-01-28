@@ -85,19 +85,34 @@ export class Tetromino {
 }
 
 export class ITetromino extends Tetromino {
-  constructor() {
+  rotated: boolean;
+
+  constructor(rotated = false) {
     // prettier-ignore
-    super(Tetromino.fromString(
-        [
-            ".....", 
-            ".....", 
-            "IIII.",
-            ".....",
-            "....."
-        ].join("\n")).grid);
+    const tetrominoString = [
+        ".....", 
+        ".....", 
+        "IIII.",
+        ".....",
+        "....."
+    ].join("\n")
+
+    const newTetromino = Tetromino.fromString(tetrominoString);
+    if (!rotated) {
+      super(newTetromino.grid);
+      this.rotated = false;
+      return;
+    }
+
+    super(newTetromino.rotateRight().grid);
+    this.rotated = rotated;
   }
 
-  rotateLeft(): Tetromino {
+  rotateRight(): ITetromino {
+    return new ITetromino(!this.rotated);
+  }
+
+  rotateLeft(): ITetromino {
     return this.rotateRight();
   }
 }
@@ -113,11 +128,11 @@ export class OTetromino extends Tetromino {
         ].join("\n")).grid);
   }
 
-  rotateRight(): Tetromino {
+  rotateRight(): OTetromino {
     return this;
   }
 
-  rotateLeft(): Tetromino {
+  rotateLeft(): OTetromino {
     return this;
   }
 }
