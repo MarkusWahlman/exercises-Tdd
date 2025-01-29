@@ -1,10 +1,11 @@
-import { Block } from "./Block.js";
+import { FallingTetromino } from "./FallingTetromino.js";
+import { Tetromino } from "./Tetromino.js";
 
 export class Board {
   width;
   height;
   grid: string[][];
-  activeBlock?: Block;
+  activeObject?: FallingTetromino;
 
   constructor(width: number, height: number) {
     this.width = width;
@@ -12,20 +13,20 @@ export class Board {
     this.grid = Array.from({ length: height }, () => Array(width).fill("."));
   }
 
-  drop(symbol: string) {
-    if (!this.activeBlock || !this.activeBlock.isFalling) {
-      this.activeBlock = new Block(this, symbol);
+  drop(object: string | Tetromino) {
+    if (!this.activeObject || !this.activeObject.isFalling) {
+      this.activeObject = new FallingTetromino(this, object);
     } else {
       throw "already falling";
     }
   }
 
   tick() {
-    this.activeBlock?.moveDown();
+    this.activeObject?.moveDown();
   }
 
   hasFalling() {
-    return this.activeBlock?.isFalling;
+    return this.activeObject?.isFalling;
   }
 
   toString() {
