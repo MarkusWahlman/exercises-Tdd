@@ -14,7 +14,7 @@ export class FallingTetromino {
 
     this.tetromino = Tetromino.fromString(tetromino.toString());
 
-    const maxWidth = Math.max(...this.tetromino.grid.map((line) => line.length));
+    const maxWidth = this.tetromino.grid[0].length;
     this.rowPos = Math.floor((board.width - maxWidth) / 2);
     this.columnPos = 0;
 
@@ -25,14 +25,10 @@ export class FallingTetromino {
     }
   }
 
-  moveDown() {
-    if (!this.isFalling) {
-      return;
-    }
-
+  private moveBy(deltaColumn: number): boolean {
     // Go through all of the blocks and check if we can move them
     let canMove = true;
-    const newColumnPos = this.columnPos + 1;
+    const newColumnPos = this.columnPos + deltaColumn;
 
     for (let y = 0; y < this.tetromino.grid.length; y++) {
       for (let x = 0; x < this.tetromino.grid[y].length; x++) {
@@ -43,7 +39,7 @@ export class FallingTetromino {
 
         if (newColumnPos + y >= this.board.height) {
           this.lockObject();
-          return;
+          return false;
         }
 
         if (y < this.tetromino.grid.length - 1 && this.tetromino.grid[y + 1][x] !== ".") {
@@ -62,7 +58,7 @@ export class FallingTetromino {
 
     if (!canMove) {
       this.lockObject();
-      return;
+      return false;
     }
 
     //Move the blocks
@@ -75,7 +71,17 @@ export class FallingTetromino {
         this.board.grid[newColumnPos + y][this.rowPos + x] = this.tetromino.grid[y][x];
       }
     }
+
     this.columnPos = newColumnPos;
+    return true;
+  }
+
+  moveDown() {
+    if (!this.isFalling) {
+      return;
+    }
+
+    this.moveBy(1);
   }
 
   lockObject() {
