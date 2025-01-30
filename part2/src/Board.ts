@@ -33,6 +33,10 @@ export class Board {
     this.activeObject?.moveDown();
   }
 
+  rotateLeft() {
+    this.activeObject?.rotateLeft();
+  }
+
   tick() {
     this.activeObject?.moveDown();
   }
