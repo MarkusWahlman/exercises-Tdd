@@ -55,7 +55,7 @@ export class FallingTetromino {
         }
 
         if (deltaRow !== 0) {
-          if (this.tetromino.grid[y][x + rowDirection] !== ".") {
+          if (this.tetromino.grid[y][x + rowDirection] && this.tetromino.grid[y][x + rowDirection] !== ".") {
             continue;
           }
         }
