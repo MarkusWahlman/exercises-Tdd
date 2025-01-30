@@ -21,6 +21,14 @@ export class Board {
     }
   }
 
+  moveLeft() {
+    this.activeObject?.moveLeft();
+  }
+
+  moveRight() {
+    this.activeObject?.moveRight();
+  }
+
   tick() {
     this.activeObject?.moveDown();
   }

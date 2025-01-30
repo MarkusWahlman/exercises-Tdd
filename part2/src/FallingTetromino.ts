@@ -25,10 +25,12 @@ export class FallingTetromino {
     }
   }
 
-  private moveBy(deltaColumn: number): boolean {
+  private moveBy(deltaColumn: number, deltaRow: number): boolean {
     // Go through all of the blocks and check if we can move them
     let canMove = true;
     const newColumnPos = this.columnPos + deltaColumn;
+    const newRowPos = this.rowPos + deltaRow;
+    const rowDirection = deltaRow === 0 ? 1 : Math.sign(deltaRow);
 
     for (let y = 0; y < this.tetromino.grid.length; y++) {
       for (let x = 0; x < this.tetromino.grid[y].length; x++) {
@@ -38,15 +40,27 @@ export class FallingTetromino {
         }
 
         if (newColumnPos + y >= this.board.height) {
-          this.lockObject();
+          canMove = false;
+          break;
+        }
+
+        if (newRowPos + x >= this.board.width || newRowPos + x < 0) {
           return false;
         }
 
-        if (y < this.tetromino.grid.length - 1 && this.tetromino.grid[y + 1][x] !== ".") {
-          continue;
+        if (deltaColumn !== 0) {
+          if (y < this.tetromino.grid.length - 1 && this.tetromino.grid[y + 1][x] !== ".") {
+            continue;
+          }
         }
 
-        if (this.board.grid[newColumnPos + y][this.rowPos + x] !== ".") {
+        if (deltaRow !== 0) {
+          if (this.tetromino.grid[y][x + rowDirection] !== ".") {
+            continue;
+          }
+        }
+
+        if (this.board.grid[newColumnPos + y][newRowPos + x] !== ".") {
           canMove = false;
           break;
         }
@@ -63,16 +77,18 @@ export class FallingTetromino {
 
     //Move the blocks
     for (let y = this.tetromino.grid.length - 1; y >= 0; y--) {
-      for (let x = 0; x < this.tetromino.grid[y].length; x++) {
+      for (let x2 = 0; x2 < this.tetromino.grid[y].length; x2++) {
+        const x = rowDirection === -1 ? x2 : this.tetromino.grid[y].length - 1 - x2;
         if (this.tetromino.grid[y][x] === ".") {
           continue;
         }
         this.board.grid[this.columnPos + y][this.rowPos + x] = ".";
-        this.board.grid[newColumnPos + y][this.rowPos + x] = this.tetromino.grid[y][x];
+        this.board.grid[newColumnPos + y][newRowPos + x] = this.tetromino.grid[y][x];
       }
     }
 
     this.columnPos = newColumnPos;
+    this.rowPos = newRowPos;
     return true;
   }
 
@@ -81,7 +97,23 @@ export class FallingTetromino {
       return;
     }
 
-    this.moveBy(1);
+    this.moveBy(1, 0);
+  }
+
+  moveLeft() {
+    if (!this.isFalling) {
+      return;
+    }
+
+    this.moveBy(0, -1);
+  }
+
+  moveRight() {
+    if (!this.isFalling) {
+      return;
+    }
+
+    this.moveBy(0, 1);
   }
 
   lockObject() {
