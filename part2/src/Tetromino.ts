@@ -5,49 +5,34 @@ export class Tetromino {
     return new ITetromino();
   }
 
-  // prettier-ignore
   static T_SHAPE = Tetromino.fromString(
-    [
-      ".T.", 
-      "TTT", 
-      "..."
-    ].join("\n")
+    `.T.
+     TTT
+     ...`
   );
 
-  // prettier-ignore
   static L_SHAPE = Tetromino.fromString(
-    [
-      "..L",
-      "LLL",
-      "..."
-    ].join("\n")
+    `LLL
+     L..
+     ...`
   );
 
-  // prettier-ignore
   static J_SHAPE = Tetromino.fromString(
-    [
-      "J..",
-      "JJJ",
-      "..."
-    ].join("\n")
+    `J..
+     JJJ
+     ...`
   );
 
-  // prettier-ignore
   static S_SHAPE = Tetromino.fromString(
-    [
-      ".SS",
-      "SS.",
-      "..."
-    ].join("\n")
+    `.SS
+     SS.
+     ...`
   );
 
-  // prettier-ignore
   static Z_SHAPE = Tetromino.fromString(
-    [
-      "ZZ.",
-      ".ZZ",
-      "..."
-    ].join("\n")
+    `ZZ.
+     .ZZ
+     ...`
   );
 
   static get O_SHAPE() {
@@ -88,16 +73,13 @@ export class ITetromino extends Tetromino {
   rotated: boolean;
 
   constructor(rotated = false) {
-    // prettier-ignore
-    const tetrominoString = [
-        ".....", 
-        ".....", 
-        "IIII.",
-        ".....",
-        "....."
-    ].join("\n")
-
-    const newTetromino = Tetromino.fromString(tetrominoString);
+    const newTetromino = Tetromino.fromString(
+      `.....
+       .....
+       IIII.
+       .....
+       .....`
+    );
     if (!rotated) {
       super(newTetromino.grid);
       this.rotated = false;
@@ -119,13 +101,13 @@ export class ITetromino extends Tetromino {
 
 export class OTetromino extends Tetromino {
   constructor() {
-    // prettier-ignore
-    super(Tetromino.fromString(
-        [
-            ".OO", 
-            ".OO", 
-            "..."
-        ].join("\n")).grid);
+    super(
+      Tetromino.fromString(
+        `.OO
+         .OO
+         ...`
+      ).grid
+    );
   }
 
   rotateRight(): OTetromino {

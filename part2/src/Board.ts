@@ -34,11 +34,39 @@ export class Board {
   }
 
   rotateLeft() {
-    this.activeObject?.rotateLeft();
+    if (!this.activeObject?.rotateLeft()) {
+      let wasMoved = this.activeObject?.moveBy(0, -1);
+      if (!wasMoved) {
+        wasMoved = this.activeObject?.moveBy(0, 1);
+      }
+      if (wasMoved) {
+        this.activeObject?.rotateLeft();
+      }
+    }
   }
 
-  rotateRight() {
-    this.activeObject?.rotateRight();
+  rotateRight(): boolean {
+    if (!this.activeObject?.rotateRight()) {
+      let wasMovedLeft = this.activeObject?.moveBy(0, -1);
+      if (wasMovedLeft) {
+        if (this.activeObject?.rotateRight()) {
+          return true;
+        }
+        //Couldn't rotate, move back
+        this.activeObject?.moveBy(0, 1);
+      }
+
+      let wasMovedRight = this.activeObject?.moveBy(0, 1);
+      if (wasMovedRight) {
+        if (this.activeObject?.rotateRight()) {
+          return true;
+        }
+        return true;
+        //Couldn't rotate, move back
+        this.activeObject?.moveBy(0, -1);
+      }
+    }
+    return false;
   }
 
   tick() {

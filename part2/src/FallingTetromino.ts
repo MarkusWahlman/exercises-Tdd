@@ -166,20 +166,20 @@ export class FallingTetromino {
     this.moveBy(0, 1);
   }
 
-  rotateLeft() {
+  rotateLeft(): boolean {
     if (!this.isFalling) {
-      return;
+      return false;
     }
 
-    this.reDraw(this.tetromino.rotateLeft());
+    return this.reDraw(this.tetromino.rotateLeft());
   }
 
-  rotateRight() {
+  rotateRight(): boolean {
     if (!this.isFalling) {
-      return;
+      return false;
     }
 
-    this.reDraw(this.tetromino.rotateRight());
+    return this.reDraw(this.tetromino.rotateRight());
   }
 
   lockObject() {

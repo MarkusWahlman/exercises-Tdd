@@ -15,6 +15,18 @@ function moveBlockLeft(board: Board, times: number) {
   }
 }
 
+function moveBlockRight(board: Board, times: number) {
+  for (let i = 0; i < times; i++) {
+    board.moveRight();
+  }
+}
+
+function moveBlockDown(board: Board, times: number) {
+  for (let i = 0; i < times; i++) {
+    board.moveDown();
+  }
+}
+
 describe("Rotating falling tetrominoes", () => {
   let board: Board;
   beforeEach(() => {
@@ -53,14 +65,14 @@ describe("Rotating falling tetrominoes", () => {
 
   test("cannot be rotated if there is no room", () => {
     board.drop(Tetromino.L_SHAPE);
-    board.rotateRight();
-    moveBlockLeft(board, 3);
+    board.rotateLeft();
+    moveBlockLeft(board, 2);
     fallToBottom(board);
 
     board.drop(Tetromino.I_SHAPE);
     board.rotateRight();
     moveBlockLeft(board, 10);
-    fallToBottom(board);
+    moveBlockDown(board, 4);
     board.rotateLeft();
 
     expect(board.toString()).to.equalShape(
@@ -75,21 +87,62 @@ describe("Rotating falling tetrominoes", () => {
     );
   });
 
-  test.skip("can wallkick from left wall", () => {
+  test("can wallkick from left wall when rotating right", () => {
     board.drop(Tetromino.T_SHAPE);
     board.rotateRight();
     moveBlockLeft(board, 10);
     board.rotateRight();
 
     expect(board.toString()).to.equalShape(
-      `.T........
+      `..........
        TTT.......
+       .T........
        ..........
        ..........
-       I.........
-       IL........
-       IL........
-       ILL.......`
+       ..........
+       ..........
+       ..........`
+    );
+  });
+
+  test("can wallkick from right wall when rotating left", () => {
+    board.drop(Tetromino.T_SHAPE);
+    board.rotateLeft();
+    moveBlockRight(board, 10);
+    board.rotateLeft();
+
+    expect(board.toString()).to.equalShape(
+      `..........
+       .......TTT
+       ........T.
+       ..........
+       ..........
+       ..........
+       ..........
+       ..........`
+    );
+  });
+
+  test("can wallkick from other blocks", () => {
+    board.drop(Tetromino.I_SHAPE);
+    board.rotateRight();
+    fallToBottom(board);
+
+    board.drop(Tetromino.T_SHAPE);
+    board.rotateLeft();
+    moveBlockRight(board, 2);
+    moveBlockDown(board, 5);
+    board.rotateRight();
+
+    expect(board.toString()).to.equalShape(
+      `..........
+       ..........
+       ..........
+       ..........
+       ....I.....
+       ....I.T...
+       ....ITTT..
+       ....I.....`
     );
   });
 });
