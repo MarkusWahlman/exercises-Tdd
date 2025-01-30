@@ -37,6 +37,10 @@ export class Board {
     this.activeObject?.rotateLeft();
   }
 
+  rotateRight() {
+    this.activeObject?.rotateRight();
+  }
+
   tick() {
     this.activeObject?.moveDown();
   }
