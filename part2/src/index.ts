@@ -1,7 +1,7 @@
-import { Board } from "./Board";
+import { Board } from "./Board.js";
 import { ScoringSystem } from "./ScoringSystem";
 import { ShuffleBag } from "./ShuffleBag";
-import { Tetromino } from "./Tetromino";
+import { Tetromino } from "./Tetromino.js";
 
 // TODO: change this code to match the API you have created, if you want to run the game for some manual testing
 
@@ -13,6 +13,7 @@ function initGame() {
     rows: 20,
     tickDuration: 1000,
     nextTick: 0,
+    board: Board;
   };
   game.scoring = new ScoringSystem();
   game.board = new Board(game.columns, game.rows);

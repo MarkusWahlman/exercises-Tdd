@@ -6,33 +6,33 @@ export class Tetromino {
   }
 
   static T_SHAPE = Tetromino.fromString(
-    `.T.
+    `...
      TTT
-     ...`
+     .T.`
   );
 
   static L_SHAPE = Tetromino.fromString(
-    `LLL
-     L..
-     ...`
+    `...
+     LLL
+     L..`
   );
 
   static J_SHAPE = Tetromino.fromString(
-    `J..
+    `...
      JJJ
-     ...`
+     ..J`
   );
 
   static S_SHAPE = Tetromino.fromString(
-    `.SS
-     SS.
-     ...`
+    `...
+     .SS
+     SS.`
   );
 
   static Z_SHAPE = Tetromino.fromString(
-    `ZZ.
-     .ZZ
-     ...`
+    `...
+     ZZ.
+     .ZZ`
   );
 
   static get O_SHAPE() {
@@ -75,8 +75,8 @@ export class ITetromino extends Tetromino {
   constructor(rotated = false) {
     const newTetromino = Tetromino.fromString(
       `.....
-       .....
        IIII.
+       .....
        .....
        .....`
     );
@@ -103,9 +103,9 @@ export class OTetromino extends Tetromino {
   constructor() {
     super(
       Tetromino.fromString(
-        `.OO
+        `...
          .OO
-         ...`
+         .OO`
       ).grid
     );
   }
