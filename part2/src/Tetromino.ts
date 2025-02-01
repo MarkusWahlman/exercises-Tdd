@@ -1,5 +1,3 @@
-import { RotatingShape } from "./RotatingShape.js";
-
 export class Tetromino {
   rotationStates: string[] = [];
   rotationIndex: number;

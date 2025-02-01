@@ -33,40 +33,33 @@ export class Board {
     this.activeObject?.moveDown();
   }
 
-  rotateLeft() {
-    if (!this.activeObject?.rotateLeft()) {
-      let wasMoved = this.activeObject?.moveBy(0, -1);
-      if (!wasMoved) {
-        wasMoved = this.activeObject?.moveBy(0, 1);
-      }
-      if (wasMoved) {
-        this.activeObject?.rotateLeft();
-      }
+  private wallKickRotate(rotateFn: () => boolean | undefined) {
+    if (rotateFn()) {
+      return;
+    }
+
+    if (this.tryMoveAndRotate(0, -1, rotateFn) || this.tryMoveAndRotate(0, 1, rotateFn)) {
+      return;
     }
   }
 
-  rotateRight(): boolean {
-    if (!this.activeObject?.rotateRight()) {
-      let wasMovedLeft = this.activeObject?.moveBy(0, -1);
-      if (wasMovedLeft) {
-        if (this.activeObject?.rotateRight()) {
-          return true;
-        }
-        //Couldn't rotate, move back
-        this.activeObject?.moveBy(0, 1);
+  private tryMoveAndRotate(dx: number, dy: number, rotateFn: () => boolean | undefined): boolean {
+    if (this.activeObject?.moveBy(dx, dy)) {
+      if (rotateFn()) {
+        return true;
       }
 
-      let wasMovedRight = this.activeObject?.moveBy(0, 1);
-      if (wasMovedRight) {
-        if (this.activeObject?.rotateRight()) {
-          return true;
-        }
-        return true;
-        //Couldn't rotate, move back
-        this.activeObject?.moveBy(0, -1);
-      }
+      this.activeObject.moveBy(-dx, -dy);
     }
     return false;
+  }
+
+  rotateLeft() {
+    this.wallKickRotate(() => this.activeObject?.rotateLeft());
+  }
+
+  rotateRight() {
+    this.wallKickRotate(() => this.activeObject?.rotateRight());
   }
 
   tick() {
