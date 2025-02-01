@@ -12,7 +12,7 @@ export class FallingTetromino {
     this.board = board;
     this.isFalling = true;
 
-    this.tetromino = Tetromino.fromString(tetromino.toString());
+    this.tetromino = tetromino instanceof Tetromino ? tetromino : Tetromino.fromString(tetromino);
 
     const maxWidth = this.tetromino.grid[0].length;
     this.rowPos = Math.floor((board.width - maxWidth) / 2);

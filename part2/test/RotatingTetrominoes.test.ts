@@ -8,8 +8,10 @@ function distinctOrientations(shape: Tetromino) {
   let goingLeft = shape;
   for (let i = 0; i < 10; i++) {
     distinct.add(goingRight.toString());
+    console.log(goingRight.toString());
     goingRight = goingRight.rotateRight();
     distinct.add(goingLeft.toString());
+    console.log(goingLeft.toString());
     goingLeft = goingLeft.rotateLeft();
   }
   return distinct;

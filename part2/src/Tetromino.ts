@@ -1,39 +1,32 @@
 import { RotatingShape } from "./RotatingShape.js";
 
 export class Tetromino {
+  rotationStates: string[] = [];
+  rotationIndex: number;
+
   static get I_SHAPE() {
     return new ITetromino();
   }
 
-  static T_SHAPE = Tetromino.fromString(
-    `...
-     TTT
-     .T.`
-  );
+  static get T_SHAPE() {
+    return new TTetromino();
+  }
 
-  static L_SHAPE = Tetromino.fromString(
-    `...
-     LLL
-     L..`
-  );
+  static get L_SHAPE() {
+    return new LTetromino();
+  }
 
-  static J_SHAPE = Tetromino.fromString(
-    `...
-     JJJ
-     ..J`
-  );
+  static get J_SHAPE() {
+    return new JTetromino();
+  }
 
-  static S_SHAPE = Tetromino.fromString(
-    `...
-     .SS
-     SS.`
-  );
+  static get S_SHAPE() {
+    return new STetromino();
+  }
 
-  static Z_SHAPE = Tetromino.fromString(
-    `...
-     ZZ.
-     .ZZ`
-  );
+  static get Z_SHAPE() {
+    return new ZTetromino();
+  }
 
   static get O_SHAPE() {
     return new OTetromino();
@@ -41,8 +34,13 @@ export class Tetromino {
 
   grid: string[][];
 
-  constructor(grid: string[][]) {
+  constructor(grid: string[][], rotationIndex = 0) {
     this.grid = grid;
+    this.rotationIndex = rotationIndex;
+
+    if ((this.constructor as any).rotationStates) {
+      this.rotationStates = (this.constructor as any).rotationStates;
+    }
   }
 
   static fromString(shape: string): Tetromino {
@@ -59,43 +57,156 @@ export class Tetromino {
   }
 
   rotateRight() {
-    const rotatingShape = RotatingShape.fromString(this.toString());
-    return Tetromino.fromString(rotatingShape.rotateRight().toString());
+    const newRotationIndex = (this.rotationIndex + 1) % (this.constructor as any).rotationStates.length;
+    return new (this.constructor as any)(newRotationIndex);
   }
 
   rotateLeft() {
-    const rotatingShape = RotatingShape.fromString(this.toString());
-    return Tetromino.fromString(rotatingShape.rotateLeft().toString());
+    const newRotationIndex =
+      (this.rotationIndex + (this.constructor as any).rotationStates.length - 1) %
+      (this.constructor as any).rotationStates.length;
+
+    return new (this.constructor as any)(newRotationIndex);
   }
 }
 
 export class ITetromino extends Tetromino {
-  rotated: boolean;
+  static rotationStates = [
+    `.....
+     IIII.
+     .....
+     .....
+     .....`,
 
-  constructor(rotated = false) {
-    const newTetromino = Tetromino.fromString(
-      `.....
-       IIII.
-       .....
-       .....
-       .....`
-    );
-    if (!rotated) {
-      super(newTetromino.grid);
-      this.rotated = false;
-      return;
-    }
+    `...I.
+     ...I.
+     ...I.
+     ...I.
+     .....`,
+  ];
 
-    super(newTetromino.rotateRight().grid);
-    this.rotated = rotated;
+  constructor(rotationIndex = 0) {
+    super(Tetromino.fromString(ITetromino.rotationStates[rotationIndex]).grid, rotationIndex);
   }
+}
 
-  rotateRight(): ITetromino {
-    return new ITetromino(!this.rotated);
+export class TTetromino extends Tetromino {
+  static rotationStates = [
+    `...
+     TTT
+     .T.`,
+
+    `.T.
+     TT.
+     .T.`,
+
+    `.T.
+     TTT
+     ...`,
+
+    `.T.
+     .TT
+     .T.`,
+  ];
+
+  constructor(rotationIndex = 0) {
+    super(Tetromino.fromString(TTetromino.rotationStates[rotationIndex]).grid, rotationIndex);
   }
+}
 
-  rotateLeft(): ITetromino {
-    return this.rotateRight();
+export class LTetromino extends Tetromino {
+  static rotationStates = [
+    `...
+     LLL
+     L..`,
+
+    `LL.
+     .L.
+     .L.`,
+
+    `..L
+     LLL
+     ...`,
+
+    `.L.
+     .L.
+     .LL`,
+  ];
+
+  constructor(rotationIndex = 0) {
+    super(Tetromino.fromString(LTetromino.rotationStates[rotationIndex]).grid, rotationIndex);
+  }
+}
+
+export class JTetromino extends Tetromino {
+  static rotationStates = [
+    `...
+     JJJ
+     ..J`,
+
+    `.JJ
+     .J.
+     .J.`,
+
+    `J..
+     JJJ
+     ...`,
+
+    `.J.
+     .J.
+     JJ.`,
+  ];
+
+  constructor(rotationIndex = 0) {
+    super(Tetromino.fromString(JTetromino.rotationStates[rotationIndex]).grid, rotationIndex);
+  }
+}
+
+export class STetromino extends Tetromino {
+  static rotationStates = [
+    `...
+     .SS
+     SS.`,
+
+    `.S.
+     .SS
+     ..S`,
+
+    `.SS
+     SS.
+     ...`,
+
+    `S..
+     SS.
+     .S.`,
+  ];
+
+  constructor(rotationIndex = 0) {
+    super(Tetromino.fromString(STetromino.rotationStates[rotationIndex]).grid, rotationIndex);
+  }
+}
+
+export class ZTetromino extends Tetromino {
+  static rotationStates = [
+    `...
+     ZZ.
+     .ZZ`,
+
+    `..Z
+     .ZZ
+     .Z.`,
+
+    `ZZ.
+     .ZZ
+     ...`,
+
+    `.Z.
+     ZZ.
+     Z..`,
+  ];
+
+  constructor(rotationIndex = 0) {
+    super(Tetromino.fromString(ZTetromino.rotationStates[rotationIndex]).grid, rotationIndex);
   }
 }
 
