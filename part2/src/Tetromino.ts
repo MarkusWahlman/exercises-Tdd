@@ -98,9 +98,9 @@ export class TTetromino extends Tetromino {
      TT.
      .T.`,
 
-    `.T.
-     TTT
-     ...`,
+    `...
+     .T.
+     TTT`,
 
     `.T.
      .TT
@@ -122,9 +122,9 @@ export class LTetromino extends Tetromino {
      .L.
      .L.`,
 
-    `..L
-     LLL
-     ...`,
+    `...
+     ..L
+     LLL`,
 
     `.L.
      .L.
@@ -142,17 +142,17 @@ export class JTetromino extends Tetromino {
      JJJ
      ..J`,
 
-    `.JJ
-     .J.
-     .J.`,
-
-    `J..
-     JJJ
-     ...`,
-
     `.J.
      .J.
      JJ.`,
+
+    `...
+     J..
+     JJJ`,
+
+    `.JJ
+     .J.
+     .J.`,
   ];
 
   constructor(rotationIndex = 0) {
@@ -166,13 +166,13 @@ export class STetromino extends Tetromino {
      .SS
      SS.`,
 
-    `.S.
-     .SS
-     ..S`,
-
-    `.SS
+    `S..
      SS.
-     ...`,
+     .S..`,
+
+    `...
+     .SS
+     SS.`,
 
     `S..
      SS.
@@ -194,9 +194,9 @@ export class ZTetromino extends Tetromino {
      .ZZ
      .Z.`,
 
-    `ZZ.
-     .ZZ
-     ...`,
+    `...
+     ZZ.
+     .ZZ`,
 
     `.Z.
      ZZ.
