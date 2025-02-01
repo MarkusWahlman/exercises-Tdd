@@ -9,24 +9,44 @@ function fallToBottom(board: Board) {
   }
 }
 
+function doOneClear(board: Board, times = 1) {
+  for (let i = 0; i < times; i++) {
+    board.drop(Tetromino.I_SHAPE);
+    board.moveLeft();
+    fallToBottom(board);
+
+    board.drop(Tetromino.I_SHAPE);
+    board.moveRight();
+    board.moveRight();
+    board.moveRight();
+    fallToBottom(board);
+  }
+}
+
 describe("Clearing lines", () => {
-  describe("When a line is full", () => {
-    let board: Board;
-    beforeEach(() => {
-      board = new Board(8, 8);
+  let board: Board;
+  beforeEach(() => {
+    board = new Board(8, 8);
+  });
+
+  describe("When a line gets full", () => {
+    test("it gets cleared", () => {
+      doOneClear(board);
+
+      expect(board.toString()).to.equalShape(
+        `........
+         ........
+         ........
+         ........
+         ........
+         ........
+         ........
+         ........`
+      );
     });
 
-    test("it gets cleared", () => {
-      board.drop(Tetromino.I_SHAPE);
-      board.moveLeft();
-      fallToBottom(board);
-
-      board.drop(Tetromino.I_SHAPE);
-      board.moveRight();
-      board.moveRight();
-      board.moveRight();
-      fallToBottom(board);
-
+    test("it can get cleared multiple times", () => {
+      doOneClear(board, 5);
       expect(board.toString()).to.equalShape(
         `........
          ........
@@ -69,11 +89,6 @@ describe("Clearing lines", () => {
   });
 
   describe("When multiple lines are full", () => {
-    let board: Board;
-    beforeEach(() => {
-      board = new Board(8, 8);
-    });
-
     test("they get cleared", () => {
       board.drop(Tetromino.O_SHAPE);
       board.moveLeft();

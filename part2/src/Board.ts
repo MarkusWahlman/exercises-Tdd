@@ -36,16 +36,19 @@ export class Board {
 
   private clearFullLines() {
     let linesCleared = 0;
-    for (let y = 0; y < this.grid.length; y++) {
-      if (this.grid[y].every((cell) => cell !== ".")) {
-        linesCleared++;
-        this.grid[y] = this.grid[y].map(() => ".");
+    const newGrid = this.grid.filter((row) => row.some((cell) => cell === "."));
 
-        for (let i = y; i > 0; i--) {
-          this.grid[i] = this.grid[i - 1];
-        }
-      }
+    linesCleared = this.grid.length - newGrid.length;
+    if (!linesCleared) {
+      return;
     }
+
+    while (newGrid.length < this.grid.length) {
+      newGrid.unshift(new Array(this.grid[0].length).fill("."));
+    }
+
+    this.grid = newGrid;
+
     if (this.onClearLine && linesCleared > 0) {
       this.onClearLine(linesCleared);
     }
