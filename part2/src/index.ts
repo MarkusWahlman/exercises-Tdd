@@ -1,5 +1,5 @@
 import { Board } from "./Board.js";
-import { ScoringSystem } from "./ScoringSystem";
+import { ScoringSystem } from "./ScoringSystem.js";
 import { ShuffleBag } from "./ShuffleBag";
 import { Tetromino } from "./Tetromino.js";
 
@@ -13,7 +13,9 @@ function initGame() {
     rows: 20,
     tickDuration: 1000,
     nextTick: 0,
-    board: Board;
+
+    board: null as Board | null,
+    scoring: null as ScoringSystem | null,
   };
   game.scoring = new ScoringSystem();
   game.board = new Board(game.columns, game.rows);

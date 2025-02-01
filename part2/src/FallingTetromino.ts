@@ -23,6 +23,8 @@ export class FallingTetromino {
         this.board.grid[this.columnPos + y][this.rowPos + x] = this.tetromino.grid[y][x];
       }
     }
+
+    console.log("ASSTRINGHERE: \n", this.board.toString(), "\n");
   }
 
   private reDraw(newTetromino: Tetromino): boolean {

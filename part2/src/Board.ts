@@ -6,6 +6,7 @@ export class Board {
   height;
   grid: string[][];
   activeObject?: FallingTetromino;
+  onClearLine?: (lineCount: number) => void;
 
   constructor(width: number, height: number) {
     this.width = width;
@@ -31,6 +32,23 @@ export class Board {
 
   moveDown() {
     this.activeObject?.moveDown();
+  }
+
+  private clearFullLines() {
+    let linesCleared = 0;
+    for (let y = 0; y < this.grid.length; y++) {
+      if (this.grid[y].every((cell) => cell !== ".")) {
+        linesCleared++;
+        this.grid[y] = this.grid[y].map(() => ".");
+
+        for (let i = y; i > 0; i--) {
+          this.grid[i] = this.grid[i - 1];
+        }
+      }
+    }
+    if (this.onClearLine && linesCleared > 0) {
+      this.onClearLine(linesCleared);
+    }
   }
 
   private wallKickRotate(rotateFn: () => boolean | undefined) {
@@ -63,7 +81,11 @@ export class Board {
   }
 
   tick() {
-    this.activeObject?.moveDown();
+    if (this.activeObject && this.activeObject.isFalling) {
+      this.activeObject.moveDown();
+    } else {
+      this.clearFullLines();
+    }
   }
 
   hasFalling() {
