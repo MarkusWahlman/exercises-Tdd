@@ -1,6 +1,7 @@
 export class ScoringSystem {
   score: number;
   level: number;
+  totalLinesCleared: number;
 
   linesCleared(lineCount: number) {
     switch (lineCount) {
@@ -19,10 +20,14 @@ export class ScoringSystem {
       default:
         console.error(`Unexpected line count: ${lineCount}`);
     }
+
+    this.totalLinesCleared += lineCount;
+    this.level = Math.min(10, Math.floor(this.totalLinesCleared / 10));
   }
 
-  constructor(score = 0, level = 0) {
+  constructor(score = 0, level = 0, totalLinesCleared = 0) {
     this.score = score;
     this.level = level;
+    this.totalLinesCleared = totalLinesCleared;
   }
 }

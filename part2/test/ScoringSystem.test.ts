@@ -38,5 +38,33 @@ describe("Scoring system", () => {
     test("the score points rise to 400", () => {
       expect(scoringSystem.score).equal(400);
     });
+
+    test("the level rises to 1", () => {
+      expect(scoringSystem.level).equal(1);
+    });
+  });
+
+  describe("When total 110 lines gets cleared", () => {
+    beforeEach(() => {
+      clearLine(scoringSystem, 110);
+    });
+
+    test("the score points rise to 26400", () => {
+      expect(scoringSystem.score).equal(26400);
+    });
+
+    test("the level rises to 10", () => {
+      expect(scoringSystem.level).equal(10);
+    });
+  });
+
+  describe("When 4 lines get cleared", () => {
+    beforeEach(() => {
+      scoringSystem.linesCleared(4);
+    });
+
+    test("the score raises to 1200", () => {
+      expect(scoringSystem.score).equal(1200);
+    });
   });
 });
