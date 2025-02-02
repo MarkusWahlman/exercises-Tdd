@@ -1,7 +1,9 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
-    <base href="https://raw.githack.com/MarkusWahlman/exercises-Tdd/main/part2/" />
+    <base
+      href="https://raw.githack.com/MarkusWahlman/exercises-Tdd/main/part2/"
+    />
     <audio id="background-audio" controls autoplay loop hidden>
       <source
         src="https://rawcdn.githack.com/MarkusWahlman/exercises-Tdd/d76a77c954caa70f09ffb68a002f139074431603/part2/src/assets/tetris.mp3"
@@ -17,14 +19,51 @@
         height: 800px;
         border: 1px solid black;
       }
+      #start-btn {
+        display: block;
+        margin: 20px auto;
+        padding: 10px 20px;
+        font-size: 18px;
+        cursor: pointer;
+      }
     </style>
-    <script
-      type="module"
-      crossorigin
-      src="https://raw.githack.com/MarkusWahlman/exercises-Tdd/main/part2/dist/assets/index-rskrG8dY.js"
-    ></script>
+    <script>
+      function playAudio() {
+        const audio = document.getElementById("background-audio");
+        audio.muted = false;
+        audio.volume = 0.02;
+        audio.play();
+      }
+
+      document.addEventListener("visibilitychange", () => {
+        if (!document.hidden) {
+          startGame();
+        }
+      });
+
+      function startGame() {
+        playAudio();
+
+        const script = document.createElement("script");
+        script.type = "module";
+        script.src =
+          "https://raw.githack.com/MarkusWahlman/exercises-Tdd/main/part2/dist/assets/index-rskrG8dY.js";
+        script.crossOrigin = "anonymous";
+        document.body.appendChild(script);
+
+        document.getElementById("start-btn").style.display = "none";
+      }
+
+      window.onload = () => {
+        const audio = document.getElementById("background-audio");
+        if (audio.paused) {
+          document.getElementById("start-btn").style.display = "block";
+        }
+      };
+    </script>
   </head>
   <body>
+    <button id="start-btn" onclick="startGame()">Start Game</button>
     <canvas id="game"></canvas>
   </body>
 </html>
