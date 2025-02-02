@@ -5,7 +5,7 @@
     "forceConsistentCasingInFileNames": true,
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
-    "noEmit": false,
+    "noEmit": true,
     "skipLibCheck": true,
     "strict": true,
     "target": "es2022"

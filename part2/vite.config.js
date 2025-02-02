@@ -3,7 +3,8 @@ import { defineConfig } from "vite";
 export default defineConfig({
   root: "src",
   test: {
-    setupFiles: ["test/testing.ts"],
+    root: "test",
+    setupFiles: ["../test/testing.ts"],
     passWithNoTests: true,
     forceRerunTriggers: ["**"],
   },

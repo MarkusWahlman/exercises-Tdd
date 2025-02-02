@@ -3,8 +3,6 @@ import { ScoringSystem } from "./ScoringSystem.js";
 import { ShuffleBag } from "./ShuffleBag.js";
 import { Tetromino } from "./Tetromino.js";
 
-// TODO: change this code to match the API you have created, if you want to run the game for some manual testing
-
 class Game {
   columns: number;
   rows: number;
@@ -101,10 +99,9 @@ function progressTime(game: Game, timestamp: number) {
 }
 
 function tick(game: Game) {
+  game.board.tick();
   if (!game.board.hasFalling()) {
     game.board.drop(game.tetrominoes.next());
-  } else {
-    game.board.tick();
   }
 }
 
