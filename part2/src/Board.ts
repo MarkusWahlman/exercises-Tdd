@@ -14,6 +14,10 @@ export class Board {
     this.grid = Array.from({ length: height }, () => Array(width).fill("."));
   }
 
+  cellAt(row: number, column: number) {
+    return this.grid[row][column];
+  }
+
   drop(object: string | Tetromino) {
     if (!this.activeObject || !this.activeObject.isFalling) {
       this.activeObject = new FallingTetromino(this, object);

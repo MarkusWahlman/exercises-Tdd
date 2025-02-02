@@ -30,7 +30,7 @@
     "npm": ">=10"
   },
   "scripts": {
-    "start": "http-server src -o / -c-1",
+    "start": "npx vite ",
     "test": "vitest run",
     "autotest": "vitest watch",
     "format": "prettier --write .",

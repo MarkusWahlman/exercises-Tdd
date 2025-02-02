@@ -1,6 +1,5 @@
 import { beforeEach, describe, test } from "vitest";
 import { expect } from "chai";
-import { Board } from "../src/Board.js";
 import { ScoringSystem } from "../src/ScoringSystem.js";
 
 function clearLine(scoringSystem: ScoringSystem, times = 1) {

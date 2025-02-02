@@ -1,8 +1,14 @@
-/** @type {import("vite").UserConfig} */
-export default {
+import { defineConfig } from "vite";
+
+export default defineConfig({
+  root: "src",
   test: {
     setupFiles: ["test/testing.ts"],
     passWithNoTests: true,
     forceRerunTriggers: ["**"],
   },
-};
+  build: {
+    outDir: "../dist",
+    sourcemap: true,
+  },
+});
