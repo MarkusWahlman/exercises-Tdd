@@ -12,9 +12,8 @@ describe("Days until Christmas", () => {
     expect(daysUntilChristmas(date)).equal(24);
   });
 
-  //The function does not work as intended if it's called in december after christmas.
-  test.skip("from after christmas is 365 days", () => {
-    const date = new Date(2023, 11, 26);
-    expect(daysUntilChristmas(date)).equal(24);
+  test("from after christmas 2022 is 364 days", () => {
+    const date = new Date(2022, 11, 26);
+    expect(daysUntilChristmas(date)).equal(364);
   });
 });
