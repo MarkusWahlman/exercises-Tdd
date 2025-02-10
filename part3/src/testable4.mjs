@@ -45,19 +45,31 @@ export class PostgresUserDao {
   }
 }
 
-export class PasswordService {
-  users;
+export class PasswordHasher {
+  hashPassword(password) {
+    return argon2.hashSync(password);
+  }
 
-  constructor(users) {
-    this.users = users;
+  verifyPassword(hash, password) {
+    return argon2.verifySync(hash, password);
+  }
+}
+
+export class PasswordService {
+  dao;
+  hasher;
+
+  constructor(dao, hasher) {
+    this.dao = dao;
+    this.hasher = hasher;
   }
 
   async changePassword(userId, oldPassword, newPassword) {
-    const user = await this.users.getById(userId);
-    if (!argon2.verifySync(user.passwordHash, oldPassword)) {
+    const user = await this.dao.getById(userId);
+    if (!this.hasher.verifyPassword(user.passwordHash, oldPassword)) {
       throw new Error("wrong old password");
     }
-    user.passwordHash = argon2.hashSync(newPassword);
-    await this.users.save(user);
+    user.passwordHash = this.hasher.hashPassword(newPassword);
+    await this.dao.save(user);
   }
 }
