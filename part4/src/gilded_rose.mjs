@@ -1,8 +1,9 @@
 export class Item {
-  constructor(name, sellIn, quality) {
+  constructor(name, sellIn, quality, isConjured = false) {
     this.name = name;
     this.sellIn = sellIn;
     this.quality = quality;
+    this.isConjured = isConjured;
   }
 }
 
@@ -12,14 +13,18 @@ export class Shop {
   }
 
   _increaseItemQuality(index, increaseBy = 1) {
-    if (this.items[index].quality < 50) {
+    if (this.items[index].quality + increaseBy <= 50) {
       this.items[index].quality = this.items[index].quality + increaseBy;
+    } else {
+      this.items[index].quality = 50;
     }
   }
 
   _decreaseItemQuality(index, decreaseBy = 1) {
-    if (this.items[index].quality > 0) {
+    if (this.items[index].quality - decreaseBy >= 0) {
       this.items[index].quality = this.items[index].quality - decreaseBy;
+    } else {
+      this.items[index].quality = 0;
     }
   }
 
@@ -32,18 +37,15 @@ export class Shop {
   }
 
   updateItemQuality(index) {
-    let expiredItemQualityAdjust = -1;
+    const qualityDecrease = this.items[index].isConjured ? 2 : 1;
+    let expiredItemQualityAdjust = qualityDecrease * -1;
 
     if (this.items[index].name === "Sulfuras, Hand of Ragnaros") {
       return;
     } else if (this.items[index].name === "Aged Brie") {
       this._increaseItemQuality(index);
 
-      if (this.items[index].sellIn < 1) {
-        this._increaseItemQuality(index);
-      }
-
-      expiredItemQualityAdjust = 0;
+      expiredItemQualityAdjust = 1;
     } else if (this.items[index].name === "Backstage passes to a TAFKAL80ETC concert") {
       this._increaseItemQuality(index);
       if (this.items[index].sellIn < 11) {
@@ -55,7 +57,7 @@ export class Shop {
 
       expiredItemQualityAdjust = -this.items[index].quality;
     } else {
-      this._decreaseItemQuality(index);
+      this._decreaseItemQuality(index, qualityDecrease);
     }
 
     this.updateItemSellIn(index);
