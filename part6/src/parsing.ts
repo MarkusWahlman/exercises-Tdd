@@ -64,13 +64,11 @@ export function rleToBoardParser(dataString: string): GameBoard {
   if (!gameBoard.width || !gameBoard.height) {
     throw new Error("Insufficient header line");
   }
-
   let pattern = "";
   for (curIndex = curIndex + 1; curIndex < lines.length; curIndex++) {
-    if (lines[curIndex].search("!") > 0) {
-      pattern += lines[curIndex].split("!")[0];
-      pattern = pattern.trim();
-
+    if (lines[curIndex].includes("!")) {
+      const endLine = lines[curIndex].split("!")[0];
+      pattern = pattern.trim() + endLine.trim();
       break;
     }
 
@@ -78,7 +76,7 @@ export function rleToBoardParser(dataString: string): GameBoard {
       throw new Error("Pattern has no end");
     }
 
-    pattern += lines[curIndex];
+    pattern = pattern.concat(lines[curIndex].trim());
   }
 
   const patternLines = pattern.split("$");
