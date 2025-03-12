@@ -242,5 +242,15 @@ describe("RLE Parser", () => {
     expect(error).to.deep.equal(new Error("Pattern has no end"));
   });
 
-  //Throws error for pattern without end
+  test("Works with bigger numbers", () => {
+    const data = `x = 11, y = 2, rule = B3/S23
+      11o$11o!`;
+
+    const parsedData = rleParser(data);
+
+    expect(parsedData.board).to.deep.equal([
+      [true, true, true, true, true, true, true, true, true, true, true],
+      [true, true, true, true, true, true, true, true, true, true, true],
+    ]);
+  });
 });

@@ -92,21 +92,27 @@ export function rleParser(dataString: string): GameBoard {
     let currentRow: boolean[] = [];
 
     let runCount = 1;
+    let countChanged = false;
     for (const char of patternLines[i]) {
       if (!isNaN(Number(char))) {
-        runCount = Number(char);
+        if (countChanged) {
+          runCount = Number(`${runCount}${char}`);
+        } else {
+          runCount = Number(char);
+        }
+        countChanged = true;
         continue;
       }
 
       if (char === "o") {
         currentRow.push(...Array(runCount).fill(true));
-        runCount = 1;
       } else if (char === "b") {
         currentRow.push(...Array(runCount).fill(false));
-        runCount = 1;
       } else {
         throw new Error("Invalid pattern character");
       }
+      runCount = 1;
+      countChanged = false;
     }
 
     if (currentRow.length < gameBoard.width) {
