@@ -1,11 +1,6 @@
-type GameBoard = {
-  width: number;
-  height: number;
-  rule: string;
-  board: boolean[][];
-};
+import { GameBoard } from "./GameOfLife";
 
-function parseHeaderLine(headerLine: string, gameBoard: GameBoard): GameBoard {
+function parseRleHeaderLine(headerLine: string, gameBoard: GameBoard): GameBoard {
   if (headerLine.length <= 0) {
     throw new Error("Empty header line");
   }
@@ -44,14 +39,14 @@ function parseHeaderLine(headerLine: string, gameBoard: GameBoard): GameBoard {
   return gameBoard;
 }
 
-export function rleParser(dataString: string): GameBoard {
+export function rleToBoardParser(dataString: string): GameBoard {
   const lines = dataString.split("\n");
 
   let gameBoard: GameBoard = {
     width: 0,
     height: 0,
     rule: "",
-    board: [],
+    grid: [],
   };
 
   let curIndex;
@@ -62,7 +57,7 @@ export function rleParser(dataString: string): GameBoard {
       continue;
     }
 
-    gameBoard = parseHeaderLine(lines[curIndex], gameBoard);
+    gameBoard = parseRleHeaderLine(lines[curIndex], gameBoard);
     break;
   }
 
@@ -116,19 +111,46 @@ export function rleParser(dataString: string): GameBoard {
     }
 
     if (currentRow.length < gameBoard.width) {
-      currentRow.push(...Array(gameBoard.width - patternLines[i].length).fill(false));
+      currentRow.push(...Array(gameBoard.width - currentRow.length).fill(false));
     }
 
     if (currentRow.length > gameBoard.width) {
       throw new Error("Pattern length more than width");
     }
 
-    gameBoard.board.push(currentRow);
-  }
-
-  if (gameBoard.board.length < gameBoard.height) {
-    gameBoard.board.push(Array(gameBoard.width).fill(false));
+    gameBoard.grid.push(currentRow);
   }
 
   return gameBoard;
+}
+
+export function boardToRleParser(board: GameBoard) {
+  let headerLine = `x = ${board.width}, y = ${board.height}`;
+  if (board.rule != "") {
+    headerLine = headerLine.concat(`, rule = ${board.rule}`);
+  }
+  if (!board.grid || board.grid.length <= 0) {
+    return headerLine;
+  }
+
+  let pattern = "";
+  for (let row = 0; row < board.grid.length; row++) {
+    for (let col = 0; col < board.grid[row].length; col++) {
+      if (board.grid[row][col] === true) {
+        pattern = pattern.concat("o");
+      }
+      if (board.grid[row][col] === false) {
+        pattern = pattern.concat("b");
+      }
+    }
+    if (row === board.grid.length - 1) {
+      pattern = pattern.concat("!");
+    } else {
+      pattern = pattern.concat("$");
+    }
+  }
+  pattern = pattern.replace(/b+(?=[$!])/g, "");
+  pattern = pattern.replace(/([ob])\1*/g, (match, char) => (match.length > 1 ? match.length + char : char));
+
+  return `${headerLine}\n${pattern}`;
 }
