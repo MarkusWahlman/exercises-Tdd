@@ -74,12 +74,17 @@ export function rleParser(dataString: string): GameBoard {
   for (curIndex = curIndex + 1; curIndex < lines.length; curIndex++) {
     if (lines[curIndex].search("!") > 0) {
       pattern += lines[curIndex].split("!")[0];
+      pattern = pattern.trim();
+
       break;
+    }
+
+    if (curIndex === lines.length - 1) {
+      throw new Error("Pattern has no end");
     }
 
     pattern += lines[curIndex];
   }
-  pattern = pattern.trim();
 
   const patternLines = pattern.split("$");
 
@@ -103,7 +108,20 @@ export function rleParser(dataString: string): GameBoard {
         throw new Error("Invalid pattern character");
       }
     }
+
+    if (currentRow.length < gameBoard.width) {
+      currentRow.push(...Array(gameBoard.width - patternLines[i].length).fill(false));
+    }
+
+    if (currentRow.length > gameBoard.width) {
+      throw new Error("Pattern length more than width");
+    }
+
     gameBoard.board.push(currentRow);
+  }
+
+  if (gameBoard.board.length < gameBoard.height) {
+    gameBoard.board.push(Array(gameBoard.width).fill(false));
   }
 
   return gameBoard;

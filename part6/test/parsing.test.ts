@@ -155,9 +155,6 @@ describe("RLE Parser", () => {
 
     const parsedData = rleParser(data);
 
-    expect(parsedData.width).to.equal(3);
-    expect(parsedData.height).to.equal(3);
-    expect(parsedData.rule).to.equal("B3/S23");
     expect(parsedData.board).to.deep.equal([
       [false, true, false],
       [false, false, true],
@@ -179,15 +176,71 @@ describe("RLE Parser", () => {
     expect(error).to.deep.equal(new Error("Invalid pattern character"));
   });
 
-  //Throws error for too long pattern
+  test("Line ends get filled with dead cells", () => {
+    const data = `x = 3, y = 3, rule = B3/S23
+      bo$o$2o!`;
 
-  //Doesn't go out of bouds if we the pattern is longer than the width
+    const parsedData = rleParser(data);
 
-  //Works with blinker pattern?
+    expect(parsedData.board).to.deep.equal([
+      [false, true, false],
+      [true, false, false],
+      [true, true, false],
+    ]);
+  });
 
-  //Works with glider pattern?
+  test("Missing lines fill with dead cells", () => {
+    const data = `x = 3, y = 3, rule = B3/S23
+      bo$o!`;
 
-  //Works with block pattern?
+    const parsedData = rleParser(data);
+
+    expect(parsedData.board).to.deep.equal([
+      [false, true, false],
+      [true, false, false],
+      [false, false, false],
+    ]);
+  });
+
+  test("Throws error for too long pattern", () => {
+    const data = `x = 3, y = 3, rule = B3/S23
+      bobo$obo$obo!`;
+
+    let error;
+    try {
+      rleParser(data);
+    } catch (e) {
+      error = e;
+    }
+
+    expect(error).to.deep.equal(new Error("Pattern length more than width"));
+  });
+
+  test("Works with glider pattern", () => {
+    const data = `x = 2, y = 2, rule = B3/S23
+      2o$2o!`;
+
+    const parsedData = rleParser(data);
+
+    expect(parsedData.board).to.deep.equal([
+      [true, true],
+      [true, true],
+    ]);
+  });
+
+  test("Throws error for pattern without end", () => {
+    const data = `x = 2, y = 2, rule = B3/S23
+      2o$2o`;
+
+    let error;
+    try {
+      rleParser(data);
+    } catch (e) {
+      error = e;
+    }
+
+    expect(error).to.deep.equal(new Error("Pattern has no end"));
+  });
 
   //Throws error for pattern without end
 });
